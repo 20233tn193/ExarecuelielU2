@@ -1,35 +1,35 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+const fetchPokemons = async () => {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
+  const data = await response.json();
+  setPokemons(data.results);
+  setError(null);
+};
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+ useEffect(() => {
+fetchPokemons();
+}, [offset]);
 
-export default App
+const getImageUrl = (index) => {
+const id = offset + index + 1;
+return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+};
+
+return (
+<>
+<div>
+
+
+  <div>
+    <button onClick={() => setOffset(Math.max(0, offset - limit))}>Anterior</button>
+    <button onClick={() => setOffset(offset + limit)}>Siguiente</button>
+  </div>
+  </div>
+</>
+);
+};
+
+export default App;
